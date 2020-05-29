@@ -1,6 +1,9 @@
 package com.pandemic.coronaviruscases.service;
 
 import com.pandemic.coronaviruscases.models.LocationStats;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Getter
+@Setter
+@NoArgsConstructor
 public class CoronaVirusDataService {
 
     private static final String COVID19_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
@@ -38,7 +44,12 @@ public class CoronaVirusDataService {
             LocationStats locationStat = new LocationStats();
             locationStat.setState(record.get("Province/State"));
             locationStat.setCountry(record.get("Country/Region"));
-            locationStat.setLatestTotalCase(Integer.valueOf(record.get(record.size() - 1)));
+            int totalGlobalCases = Integer.valueOf(record.get(record.size() - 1));
+            int totalCasesUntilLastDay = Integer.valueOf(record.get(record.size() - 2));
+            int totalCasesUntilLastWeek = Integer.valueOf(record.get(record.size() - 8));
+            locationStat.setLatestTotalCase(totalGlobalCases);
+            locationStat.setIncreasedCasesFromLastDay(totalGlobalCases - totalCasesUntilLastDay);
+            locationStat.setIncreasedCasesFromLastWeek(totalGlobalCases - totalCasesUntilLastWeek);
             newStats.add(locationStat);
         }
         this.allStats = newStats;

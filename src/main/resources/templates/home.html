@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Coronavirus Cases Updates</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Coronavirus Cases Updates</h1>
+        <p>This application lists the current number of cases reported across the globe</p>
+
+        <div class="jumbotron">
+            <h1 class="display-4" th:text="${#numbers.formatDecimal(totalReportedCases, 0, 'COMMA', 0, 'POINT')}"></h1>
+            <p class="lead">Total cases reported as of today</p>
+            <hr class="my-4">
+            <p>
+                <sapn>New Cases Since Last Day: </sapn>
+                <span style="font-weight:bold;margin-right:25px" th:text="${#numbers.formatDecimal(totalNewCasesSinceLastDay, 0, 'COMMA', 0, 'POINT')}"></span>
+                <sapn>New Cases Since Last Week: </sapn>
+                <span style="font-weight:bold;margin-right:25px" th:text="${#numbers.formatDecimal(totalNewCasesSinceLastWeek, 0, 'COMMA', 0, 'POINT')}"></span>
+            </p>
+        </div>
+
+
+        <table class="table">
+            <tr>
+                <th>State</th>
+                <th>Country</th>
+                <th>Total Cases</th>
+                <th>↑ Last Day</th>
+                <th>↑ Last Week</th>
+            </tr>
+            <tr th:each="locationStat : ${locationStats}">
+                <td th:text="${locationStat.state}"></td>
+                <td th:text="${locationStat.country}"></td>
+                <td th:text="${#numbers.formatDecimal(locationStat.latestTotalCase, 0, 'COMMA', 0, 'POINT')}">0</td>
+                <td th:text="${#numbers.formatDecimal(locationStat.increasedCasesFromLastDay, 0, 'COMMA', 0, 'POINT')}">0</td>
+                <td th:text="${#numbers.formatDecimal(locationStat.increasedCasesFromLastWeek, 0, 'COMMA', 0, 'POINT')}">0</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

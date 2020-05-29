@@ -12,6 +12,8 @@ public class LocationStats {
     private String state;
     private String country;
     private int latestTotalCase;
+    private int increasedCasesFromLastDay;
+    private int increasedCasesFromLastWeek;
 
     @Override
     public String toString() {
